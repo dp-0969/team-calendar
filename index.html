@@ -441,7 +441,7 @@
             const applyChanges = (targetEvent) => {
                 targetEvent.setProp('title', title);
                 targetEvent.setExtendedProp('notes', notes);
-                targetEvent.setDates(new Date(startStr), new Date(endStr));
+                targetEvent.setDates(new Date(startStr), new Date(endStr), { allDay: currentEditingEvent.allDay });
             };
 
             if (seriesId) {
@@ -469,11 +469,12 @@
                                     e.setProp('title', title);
                                     e.setExtendedProp('notes', notes);
                                     if (e.id === currentEditingEvent.id) {
-                                        e.setDates(newStart, newEnd);
+                                        e.setDates(newStart, newEnd, { allDay: e.allDay });
                                     } else {
                                         e.setDates(
                                             new Date(e.start.getTime() + startDeltaMs),
-                                            e.end ? new Date(e.end.getTime() + endDeltaMs) : null
+                                            e.end ? new Date(e.end.getTime() + endDeltaMs) : null,
+                                            { allDay: e.allDay }
                                         );
                                     }
                                 }
@@ -623,7 +624,7 @@
                                 if (e.extendedProps.seriesId === seriesId && e.id !== event.id) {
                                     const newStart = new Date(e.start.getTime() + startDeltaMs);
                                     const newEnd = e.end ? new Date(e.end.getTime() + endDeltaMs) : null;
-                                    e.setDates(newStart, newEnd);
+                                    e.setDates(newStart, newEnd, { allDay: e.allDay });
                                 }
                             });
                             saveStateToStorage();
